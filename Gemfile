@@ -5,8 +5,8 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in logjoy.gemspec
 gemspec
 
-gem "rake", "~> 13.0"
+gem "rake", "13.0.6"
 
-gem "minitest", "~> 5.0"
+gem "rspec", "3.10.0"
 
-gem "rubocop", "~> 1.7"
+gem "rubocop", "1.21.0"
