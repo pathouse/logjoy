@@ -1,17 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails/railtie'
-require 'logjoy/configuration'
-require 'logjoy/formatter'
+
+require_relative 'configuration'
 
 module Logjoy
   class Railtie < Rails::Railtie
     config.logjoy = Logjoy::Configuration.new
-    config.log_formatter = Logjoy::Formatter.new
+
+    config.after_initialize do |app|
+      Logjoy.manage_global_settings(app)
+    end
 
     Logjoy::COMPONENTS.each do |component|
       config.after_initialize do |app|
-        ActiveSupport.on_load(component) do
-          Logjoy.manage_log_subscribers(app, component)
-        end
+        Logjoy.manage_log_subscribers(app, component)
       end
     end
   end

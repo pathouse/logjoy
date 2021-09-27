@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'active_support/ordered_options'
 
 module Logjoy
   class Configuration
-    attr_accessor *Logjoy::COMPONENTS
+    attr_accessor(*Logjoy::COMPONENTS)
 
     def initialize
       Logjoy::COMPONENTS.each do |component|

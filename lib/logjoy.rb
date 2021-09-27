@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 require_relative 'logjoy/version'
+require_relative 'logjoy/formatter'
 
 module Logjoy
   class Error < StandardError; end
   module_function
+
+  def manage_global_settings(app)
+    app.config.log_formatter ||= Formatter
+  end
 
   COMPONENTS = %i[action_controller action_view active_record action_mailer active_storage].freeze
 
