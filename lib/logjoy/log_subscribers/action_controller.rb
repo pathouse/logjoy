@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pry'
 require 'active_support/log_subscriber'
 
 module Logjoy
@@ -8,37 +9,35 @@ module Logjoy
 
     class ActionController < ActiveSupport::LogSubscriber
       def start_processing(event)
-        # TODO
-        # merge event.payload with configured options
-        # log as json at the level normally logged in rails
+        binding.pry
       end
 
       def process_action(event)
-        # TODO
+        binding.pry
       end
 
       def halted_callback(event)
-        # TODO
+        binding.pry
       end
 
       def send_file(event)
-        # TODO
+        binding.pry
       end
 
       def redirect_to(event)
-        # TODO
+        binding.pry
       end
 
       def send_data(event)
-        # TODO
+        binding.pry
       end
 
       def unpermitted_parameters(event)
-        # TODO
+        binding.pry
       end
 
       def logger
-        ActionController::Base.logger
+        ::ActionController::Base.logger
       end
     end
   end
