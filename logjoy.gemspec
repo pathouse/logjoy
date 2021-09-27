@@ -24,5 +24,12 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'railties', '6.1.4.1'
+  spec.add_runtime_dependency 'actioncable', '~> 6'
+  spec.add_runtime_dependency 'actionmailer', '~> 6'
+  spec.add_runtime_dependency 'actionpack', '~> 6'
+  spec.add_runtime_dependency 'actionview', '~> 6'
+  spec.add_runtime_dependency 'activerecord', '~> 6'
+  spec.add_runtime_dependency 'activestorage', '~> 6'
+  spec.add_runtime_dependency 'activesupport', '~> 6'
+  spec.add_runtime_dependency 'railties', '~> 6'
 end

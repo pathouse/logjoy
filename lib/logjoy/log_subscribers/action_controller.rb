@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-require 'pry'
 require 'active_support/log_subscriber'
+require 'action_dispatch/exception_wrapper'
+require 'action_controller/base'
+require 'action_controller/log_subscriber'
 
 module Logjoy
   module LogSubscribers
