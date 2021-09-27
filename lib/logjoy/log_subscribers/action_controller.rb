@@ -25,9 +25,9 @@ module Logjoy
           payload = event.payload
 
           log = payload.slice(:controller, :action, :format, :method, :path, :status)
-          log[:view_runtime] = payload[:view_runtime].round
-          log[:db_runtime] = payload[:view_runtime].round
-          log[:duration] = event.duration.round
+          log[:view_runtime] = payload.fetch(:view_runtime, 0).round(3)
+          log[:db_runtime] = payload.fetch(:db_runtime, 0).round(3)
+          log[:duration] = event.duration.round(3)
           log[:params] = cleanup_params(payload[:params])
           log[:request_id] = payload[:request].request_id
           log[:event] = event.name
@@ -55,7 +55,7 @@ module Logjoy
         info do
           {
             path: event.payload[:path],
-            duration: event.duration.round,
+            duration: event.duration.round(3),
             event: event.name
           }
         end
@@ -76,7 +76,7 @@ module Logjoy
         info do
           {
             filename: event.payload[:filename],
-            duration: event.duration.round,
+            duration: event.duration.round(3),
             event: event.name
           }
         end
@@ -106,7 +106,7 @@ module Logjoy
           info do
             {
               key: ActiveSupport::Cache.expand_cache_key(event.payload[:key] || event.payload[:path]),
-              duration: event.duration.round,
+              duration: event.duration.round(3),
               event: event.name
             }
           end
