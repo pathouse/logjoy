@@ -1,5 +1,13 @@
 # Lograge vs. Logjoy
 
+Please note: this comparison is accurate as of the writing of this document -
+[lograge v0.11.2](https://github.com/roidrage/lograge/releases/tag/v0.11.2)
+
+So if you are reading this at a later date this may not be entirely accurate.
+
+Both this gem and lograge are relatively small codebases so I encourage you to
+take a look and make your own comparison.
+
 ## How Lograge works:
 
 - Monkeypatches `Rails::Rack::Logger`
@@ -34,6 +42,9 @@ Logjoy is very similar to Lograge with a few key differences
 - no change to action cable logs
 - only JSON formatting
 
-We stay away from monkeypatching Rails because that makes the code
-harder to maintain (indeed, the monkeypatching is the reason I started working
-on this gem to move away from Lograge)
+Monkeypatching Rails is avoided because that makes the code harder to maintain.
+
+As a result, Logjoy is not as aggressive about cleaning up certain default Rails logs such as
+the request started logs:
+
+> `Started GET "/" for ::1 at 2021-09-2900:25:00 -0400`
