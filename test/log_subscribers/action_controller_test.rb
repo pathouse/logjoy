@@ -119,6 +119,17 @@ class ACLogSubscriberTest < ActionController::TestCase
     assert_match(/404/, logs.first)
   end
 
+  def test_process_action_with_customizer
+    Logjoy.customizer = ->(_event) { { additional: 'stuff' } }
+
+    get :show
+    wait
+
+    assert_log_has_keys(logs.first, %w[:custom :additional])
+
+    Logjoy.customizer = nil
+  end
+
   def logs
     @logs ||= @logger.logged(:info)
   end

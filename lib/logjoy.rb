@@ -8,6 +8,20 @@ module Logjoy
   class Error < StandardError; end
   module_function
 
+  mattr_accessor :customizer
+
+  def custom_fields(event)
+    return {} if customizer.nil?
+
+    customizer.call(event)
+  end
+
+  def set_customizer(app)
+    return unless enabled?(app)
+
+    self.customizer = app.config.logjoy.customizer
+  end
+
   def set_formatter(app)
     return unless enabled?(app)
 
