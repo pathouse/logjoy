@@ -1,12 +1,16 @@
 # frozen_string_literal: true
-require 'json'
 
 module Logjoy
   class Formatter < ::Logger::Formatter
-    def call(severity, timestamp, progname, msg)
-      msg = JSON.parse(msg)
+    REPLACE = 'REPLACEME'
 
-      { level: severity, timestamp: timestamp, progname: progname, message: msg }.to_json
+    # msg is already formatted as JSON
+    def call(severity, timestamp, progname, msg)
+      fields = { level: severity, timestamp: timestamp }
+      fields[:progname] = progname unless progname.nil?
+      fields[:message] = REPLACE
+      json = fields.to_json
+      json.gsub(/"#{REPLACE}"/, msg)
     end
   end
 end
