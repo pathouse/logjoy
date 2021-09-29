@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'pry'
 
 require_relative 'logjoy/version'
 require_relative 'logjoy/formatter'
@@ -9,22 +8,25 @@ module Logjoy
   class Error < StandardError; end
   module_function
 
-  def manage_global_settings(app)
+  def set_formatter(app)
+    return unless enabled?(app)
+
     app.config.log_formatter = Formatter
   end
 
-  COMPONENTS = %i[action_controller action_view active_record action_mailer active_storage].freeze
+  REPLACE_SUBSCRIBERS = %i[action_controller].freeze
+  DETACH_SUBSCRIBERS = %i[action_view action_mailer active_storage].freeze
 
-  def manage_log_subscribers(app, component)
-    config = component_config(app, component)
-    return unless config.enabled
+  def detach_default_subscriber(app, component)
+    return unless enabled?(app)
 
     default_subscriber(component).detach_from(component)
-    logjoy_subscriber(component).attach_to(component)
   end
 
-  def component_config(app, component)
-    app.config.logjoy.public_send(component)
+  def attach_subscriber(app, component)
+    return unless enabled?(app)
+
+    logjoy_subscriber(component).attach_to(component)
   end
 
   def default_subscriber(component)
@@ -33,6 +35,10 @@ module Logjoy
 
   def logjoy_subscriber(component)
     "Logjoy::LogSubscribers::#{component.to_s.camelize}".constantize
+  end
+
+  def enabled?(app)
+    app.config.logjoy.enabled
   end
 end
 

@@ -1,20 +1,26 @@
 # frozen_string_literal: true
 
+require 'active_support/ordered_options'
 require 'rails/railtie'
-
-require_relative 'configuration'
 
 module Logjoy
   class Railtie < Rails::Railtie
-    config.logjoy = Logjoy::Configuration.new
+    config.logjoy = ActiveSupport::OrderedOptions.new
 
     config.after_initialize do |app|
-      Logjoy.manage_global_settings(app)
+      Logjoy.set_formatter(app)
     end
 
-    Logjoy::COMPONENTS.each do |component|
+    Logjoy::REPLACE_SUBSCRIBERS.each do |component|
       config.after_initialize do |app|
-        Logjoy.manage_log_subscribers(app, component)
+        Logjoy.detach_default_subscriber(app, component)
+        Logjoy.attach_subscriber(app, component)
+      end
+    end
+
+    Logjoy::DETACH_SUBSCRIBERS.each do |component|
+      config.after_initialize do |app|
+        Logjoy.detach_default_subscriber(app, component)
       end
     end
   end
