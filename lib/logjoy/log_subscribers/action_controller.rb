@@ -29,6 +29,10 @@ module Logjoy
         end
       end
 
+      def logger
+        ::ActionController::Base.logger
+      end
+
       private
 
       def rounded_ms(value)
