@@ -8,10 +8,6 @@ module Logjoy
     config.logjoy = ActiveSupport::OrderedOptions.new
 
     config.after_initialize do |app|
-      Logjoy.set_formatter(app)
-    end
-
-    config.after_initialize do |app|
       Logjoy.set_customizer(app)
     end
 

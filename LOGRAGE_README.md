@@ -16,18 +16,24 @@
 ## How Logjoy works
 
 - no monkey patching anything
-- provides an alternate set of log subscribers for each default Rails subscriber
+- Detaches the default Rails log subscribers for
+  - action controller
+  - action view
+  - action mailer
+  - active storage
+- Attaches a new log subscriber for
   - action_controller
-  - action_mailer
-  - action_view
-  - active_record
-  - active_storage
-- only provides JSON formatting or Rails default formatting
+- only provides JSON formatting
+- allows configuration to add custom data to logs
 
 ## TL;DR
 
-The TL;DR here is that Logjoy is simpler and less opinionated in terms of
-implementation with the trade off of being a little bit more involved to
-configure. We stay away from monkeypatching Rails because that makes the code
+Logjoy is very similar to Lograge with a few key differences
+
+- no monkeypatching
+- no change to action cable logs
+- only JSON formatting
+
+We stay away from monkeypatching Rails because that makes the code
 harder to maintain (indeed, the monkeypatching is the reason I started working
 on this gem to move away from Lograge)

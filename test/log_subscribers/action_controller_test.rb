@@ -42,7 +42,7 @@ class ACLogSubscriberTest < ActionController::TestCase
 
   def setup
     super
-    @old_logger = ActionController::Base.logger
+    @old_logger = Logjoy.logger
     @routes = ActionDispatch::Routing::RouteSet.new
     ActiveSupport::Deprecation.silence do
       @routes.draw { get ':controller(/:action)' }
@@ -54,11 +54,11 @@ class ACLogSubscriberTest < ActionController::TestCase
   def teardown
     super
     ActiveSupport::LogSubscriber.log_subscribers.clear
-    ActionController::Base.logger = @old_logger
+    Logjoy.logger = @old_logger
   end
 
   def set_logger(logger)
-    ActionController::Base.logger = logger
+    Logjoy.logger = logger
   end
 
   def assert_log_has_keys(log, keys)
@@ -72,20 +72,20 @@ class ACLogSubscriberTest < ActionController::TestCase
     wait
     assert_equal 1, logs.size
     keys = %w[
-      :controller
-      :action
-      :format
-      :method
-      :path
-      :status
-      :view_runtime
-      :db_runtime
-      :duration
-      :params
-      :request_id
-      :event
-      :allocations
-      :status
+      controller
+      action
+      format
+      method
+      path
+      status
+      view_runtime
+      db_runtime
+      duration
+      params
+      request_id
+      event
+      allocations
+      status
     ]
     assert_log_has_keys(logs.first, keys)
   end
@@ -125,7 +125,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :show
     wait
 
-    assert_log_has_keys(logs.first, %w[:custom :additional])
+    assert_log_has_keys(logs.first, %w[custom additional])
 
     Logjoy.customizer = nil
   end

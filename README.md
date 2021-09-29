@@ -1,6 +1,7 @@
 # Logjoy
 
-Logjoy provides an alternative set of `ActiveSupport::LogSubscriber`s for your Rails application.
+Logjoy makes some changes to Rails default `ActiveSupport::LogSubscriber`s in order
+to provide streamlined request logs for use in production.
 
 The name is an homage to the [lograge gem](https://github.com/roidrage/lograge)
 which is no longer maintained and which this gem is intended to replace.
@@ -23,7 +24,27 @@ And then execute:
 
 ## Usage
 
-TODO: Write usage instructions here
+Logjoy can be configured with the following options:
+
+`config/initializers/logjoy.rb`
+
+```ruby
+Rails.application.configure do |config|
+  config.logjoy.enabled = true
+
+  config.logjoy.customizer = CustomizerClass
+  # or
+  config.logjoy.customizer = ->(event) { ... }
+end
+```
+
+The customizer configuration may be a class that implements a `.call` method, or a lambda.
+The customizer will receive an `ActiveSupport::Notification` event for the
+`process_action.action_controller` event.
+It should return a hash that will be added to the log in a `:custom` field.
+
+More documentation about this event can be found here:
+https://guides.rubyonrails.org/active_support_instrumentation.html#process-action-action-controller
 
 ## Development
 

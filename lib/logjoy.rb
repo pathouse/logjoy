@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require 'action_view/log_subscriber'
+require 'action_controller/log_subscriber'
+require 'action_mailer/log_subscriber'
+require 'active_storage/log_subscriber'
+
 require_relative 'logjoy/version'
 require_relative 'logjoy/formatter'
 require_relative 'logjoy/log_subscribers/action_controller'
@@ -8,7 +13,14 @@ module Logjoy
   class Error < StandardError; end
   module_function
 
-  mattr_accessor :customizer
+  mattr_accessor :customizer, :logger
+
+  def init_logger
+    base_logger = ActiveSupport::Logger.new($stdout)
+    base_logger.formatter = Formatter.new
+    self.logger = ActiveSupport::TaggedLogging.new(base_logger)
+  end
+  init_logger
 
   def custom_fields(event)
     return {} if customizer.nil?
@@ -20,12 +32,6 @@ module Logjoy
     return unless enabled?(app)
 
     self.customizer = app.config.logjoy.customizer
-  end
-
-  def set_formatter(app)
-    return unless enabled?(app)
-
-    app.config.log_formatter = Formatter
   end
 
   REPLACE_SUBSCRIBERS = %i[action_controller].freeze
