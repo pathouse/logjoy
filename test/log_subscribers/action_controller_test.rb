@@ -42,7 +42,7 @@ class ACLogSubscriberTest < ActionController::TestCase
 
   def setup
     super
-    @old_logger = Logjoy.logger
+    @old_logger = ActionController::Base.logger
     @routes = ActionDispatch::Routing::RouteSet.new
     ActiveSupport::Deprecation.silence do
       @routes.draw { get ':controller(/:action)' }
@@ -54,11 +54,11 @@ class ACLogSubscriberTest < ActionController::TestCase
   def teardown
     super
     ActiveSupport::LogSubscriber.log_subscribers.clear
-    Logjoy.logger = @old_logger
+    ActionController::Base.logger = @old_logger
   end
 
   def set_logger(logger)
-    Logjoy.logger = logger
+    ActionController::Base.logger = logger
   end
 
   def assert_log_has_keys(log, keys)

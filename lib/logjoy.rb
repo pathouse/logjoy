@@ -6,21 +6,13 @@ require 'action_mailer/log_subscriber'
 require 'active_storage/log_subscriber'
 
 require_relative 'logjoy/version'
-require_relative 'logjoy/formatter'
 require_relative 'logjoy/log_subscribers/action_controller'
 
 module Logjoy
   class Error < StandardError; end
   module_function
 
-  mattr_accessor :customizer, :logger
-
-  def init_logger
-    base_logger = ActiveSupport::Logger.new($stdout)
-    base_logger.formatter = Formatter.new
-    self.logger = ActiveSupport::TaggedLogging.new(base_logger)
-  end
-  init_logger
+  mattr_accessor :customizer
 
   def custom_fields(event)
     return {} if customizer.nil?

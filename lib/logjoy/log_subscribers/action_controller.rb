@@ -4,8 +4,6 @@ require 'active_support/log_subscriber'
 require 'action_controller/base'
 require 'action_controller/log_subscriber'
 
-require_relative '../formatter'
-
 module Logjoy
   module LogSubscribers
     class ActionController < ActiveSupport::LogSubscriber
@@ -33,7 +31,7 @@ module Logjoy
       end
 
       def logger
-        Logjoy.logger
+        ::ActionController::Base.logger
       end
 
       private
