@@ -10,6 +10,24 @@ See
 [LOGRAGE_README](https://github.com/pathouse/logjoy/blob/main/LOGRAGE_README.md)
 for more information about the differences between this gem and lograge.
 
+```json
+{
+  "controller": "PagesController",
+  "action": "index",
+  "format": "html",
+  "method": "GET",
+  "path": "/",
+  "status": 200,
+  "view_runtime": 123.456,
+  "db_runtime": 123.456,
+  "duration": 1234.567,
+  "params": {},
+  "request_id": "95cb397a-df23-4548-b641-ae8eef9d3a4e",
+  "event": "process_action.action_controller",
+  "allocations": 123456
+}
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:
