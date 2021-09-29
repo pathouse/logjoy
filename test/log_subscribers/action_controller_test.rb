@@ -132,11 +132,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :show
     wait
 
-    assert_log_has_keys(logs.first, %w[custom])
-    parsed_log = JSON.parse(logs.first)
-
-    assert_equal parsed_log['custom'], { 'additional' => 'stuff' }
-
+    assert_log_has_keys(logs.first, %w[additional])
     Logjoy.customizer = nil
   end
 

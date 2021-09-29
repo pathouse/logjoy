@@ -19,14 +19,13 @@ module Logjoy
           log[:request_id] = payload[:request].request_id
           log[:event] = event.name
           log[:allocations] = event.allocations
-          log[:custom] = Logjoy.custom_fields(event) if Logjoy.customizer.present?
 
           if log[:status].nil? && (exception_class_name = payload[:exception]&.first)
             log[:exception] = exception_class_name
             log[:status] = ::ActionDispatch::ExceptionWrapper.status_code_for_exception(exception_class_name)
           end
 
-          log.to_json
+          log.merge(Logjoy.custom_fields(event)).to_json
         end
       end
 
