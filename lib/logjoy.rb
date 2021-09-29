@@ -12,7 +12,8 @@ module Logjoy
   class Error < StandardError; end
   module_function
 
-  mattr_accessor :customizer
+  mattr_accessor :customizer, :filters
+  self.filters = []
 
   def custom_fields(event)
     return {} if customizer.nil?
@@ -24,6 +25,12 @@ module Logjoy
     return unless enabled?(app)
 
     self.customizer = app.config.logjoy.customizer
+  end
+
+  def set_path_filters(app)
+    return unless enabled?(app)
+
+    self.filters = app.config.logjoy.filters || []
   end
 
   REPLACE_SUBSCRIBERS = %i[action_controller].freeze

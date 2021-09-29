@@ -53,6 +53,8 @@ Rails.application.configure do |config|
   config.logjoy.customizer = CustomizerClass
   # or
   config.logjoy.customizer = ->(event) { ... }
+
+  config.logjoy.filters = ['/health_check']
 end
 ```
 
@@ -63,6 +65,9 @@ It should return a hash that will be added to the log in a `:custom` field.
 
 More documentation about this event can be found here:
 https://guides.rubyonrails.org/active_support_instrumentation.html#process-action-action-controller
+
+The filters configuration can be used to ignore requests with the given path to
+reduce log noise from things like health checks.
 
 ## Development
 

@@ -97,6 +97,13 @@ class ACLogSubscriberTest < ActionController::TestCase
     assert_log_has_keys(logs.first, keys)
   end
 
+  def test_process_action_with_filtered_path
+    Logjoy.filters = ['/another/log_subscribers/show']
+    get :show
+    wait
+    assert_equal 0, logs.size
+  end
+
   def test_process_action_with_exception_includes_http_status_code
     begin
       get :with_exception

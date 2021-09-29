@@ -11,6 +11,10 @@ module Logjoy
       Logjoy.set_customizer(app)
     end
 
+    config.after_initialize do |app|
+      Logjoy.set_path_filters(app)
+    end
+
     Logjoy::REPLACE_SUBSCRIBERS.each do |component|
       config.after_initialize do |app|
         Logjoy.detach_default_subscriber(app, component)

@@ -8,6 +8,8 @@ module Logjoy
   module LogSubscribers
     class ActionController < ActiveSupport::LogSubscriber
       def process_action(event)
+        return if ignore_event?(event)
+
         info do
           payload = event.payload
 
@@ -34,6 +36,10 @@ module Logjoy
       end
 
       private
+
+      def ignore_event?(event)
+        Logjoy.filters.include?(event.payload[:path])
+      end
 
       def rounded_ms(value)
         return 'N/A' if value.nil?
