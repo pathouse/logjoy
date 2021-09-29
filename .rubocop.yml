@@ -8,3 +8,18 @@ Layout/LineLength:
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
