@@ -7,6 +7,7 @@
 
 require 'action_controller'
 require 'active_support/log_subscriber/test_helper'
+require 'json'
 require 'logjoy/log_subscribers/action_controller'
 
 module Another
@@ -62,9 +63,15 @@ class ACLogSubscriberTest < ActionController::TestCase
   end
 
   def assert_log_has_keys(log, keys)
+    parsed_log = JSON.parse(log)
     keys.each do |key|
-      assert_match(/#{key}/, log)
+      assert parsed_log.key?(key)
     end
+  end
+
+  def assert_log_has_status(log, status)
+    parsed_log = JSON.parse(log)
+    assert_equal status, parsed_log['status']
   end
 
   def test_process_action
@@ -97,7 +104,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     rescue Exception
     end
     assert_equal 1, logs.size
-    assert_match(/500/, logs.first)
+    assert_log_has_status(logs.first, 500)
   end
 
   def test_process_action_with_rescued_exception_includes_http_status_code
@@ -105,7 +112,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     wait
 
     assert_equal 1, logs.size
-    assert_match(/406/, logs.first)
+    assert_log_has_status(logs.first, 406)
   end
 
   def test_process_action_with_with_action_not_found_logs_404
@@ -116,7 +123,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     end
 
     assert_equal 1, logs.size
-    assert_match(/404/, logs.first)
+    assert_log_has_status(logs.first, 404)
   end
 
   def test_process_action_with_customizer
@@ -125,7 +132,10 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :show
     wait
 
-    assert_log_has_keys(logs.first, %w[custom additional])
+    assert_log_has_keys(logs.first, %w[custom])
+    parsed_log = JSON.parse(logs.first)
+
+    assert_equal parsed_log['custom'], { 'additional' => 'stuff' }
 
     Logjoy.customizer = nil
   end
