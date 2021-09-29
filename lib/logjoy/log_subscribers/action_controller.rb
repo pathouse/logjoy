@@ -13,7 +13,8 @@ module Logjoy
         info do
           payload = event.payload
 
-          log = payload.slice(:controller, :action, :format, :method, :path, :status)
+          log = payload.slice(:controller, :action, :format, :method, :status)
+          log[:path] = strip_query(payload[:path])
           log[:view_runtime] = rounded_ms(payload[:view_runtime])
           log[:db_runtime] = rounded_ms(payload[:db_runtime])
           log[:duration] = rounded_ms(event.duration)
@@ -36,6 +37,11 @@ module Logjoy
       end
 
       private
+
+      def strip_query(path_with_query)
+        uri = URI.parse(path_with_query)
+        uri.path
+      end
 
       def ignore_event?(event)
         Logjoy.filters.include?(event.payload[:path])
