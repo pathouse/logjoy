@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'active_support/log_subscriber'
-require 'action_controller/log_subscriber'
-require 'active_support/notifications'
-require 'active_support/ordered_options'
-require 'pry'
 
 class App
   attr_reader :config
