@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/string/inflections'
 require 'action_view/log_subscriber'
 require 'action_controller/log_subscriber'
 require 'action_mailer/log_subscriber'
 require 'active_storage/log_subscriber'
-require 'active_support/core_ext/string/inflections'
 
 require_relative 'logjoy/version'
 require_relative 'logjoy/log_subscribers/action_controller'
