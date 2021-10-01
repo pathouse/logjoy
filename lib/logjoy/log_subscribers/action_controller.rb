@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'active_support/log_subscriber'
-require 'action_controller/base'
 require 'action_controller/log_subscriber'
 
 module Logjoy
